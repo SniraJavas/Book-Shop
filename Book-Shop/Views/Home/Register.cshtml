@@ -1,0 +1,94 @@
+﻿@model BookShop.Models.Users
+<link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
+<script src="../../Scripts/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.validate.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.validate.unobtrusive.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#UserName').on('change', function () {
+            var getName = $(this).val();
+            $.ajax({
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Home/GetUserByUsername',
+                data: { uname: getName },
+                success: function (data) {
+                    if (data == "Yes") {
+                        $('#userError').html("Username Already Exist");
+                        $('#userError').addClass('uExist');
+                        $('#UserName').val('');
+                        $('#UserName').focus();
+                    } else {
+                        $('#userError').html("User Available");
+                        $('#userError').addClass('uAvail');
+                    }
+                },
+                error: function (response) {
+                    alert('no');
+                }
+            });
+        });
+    });
+</script>
+
+@{
+    ViewBag.Title = "Register";
+}
+
+
+<div class="divRegister">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Users</legend>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.FirstName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.FirstName)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.LastName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.LastName)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.UserName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.UserName)
+                @Html.ValidationMessageFor(model => model.UserName)
+                <span id="userError"></span>
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Password)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Email)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+
+            <p>
+                <input type="submit" value="Create" id="btnCreate" />
+            </p>
+            <p class="lnkAction">  @Html.ActionLink("Login", "login")</p>
+        </fieldset>
+    }
+</div>

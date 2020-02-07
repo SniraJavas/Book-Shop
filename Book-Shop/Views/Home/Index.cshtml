@@ -1,0 +1,137 @@
+﻿@model IEnumerable<BookShop.Models.Item>
+
+@{
+
+    ViewBag.Title = "Available Books in our shop";
+
+}
+
+@*<h2>Available Book List</h2>*@
+
+
+
+
+
+<script src="~/Scripts/jquery-3.3.1.js" type="text/javascript"></script>
+
+
+<script src="~/Scripts/bootstrap-modal.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="../../Content/Style.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+
+        $('.divAddCart').on('click', function () {
+            var getItemId = parseInt($(this).closest('td').prop('id'));
+            var getUserName = $('.divName').html();
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: 'Home/AddCart',
+                data: "{ 'ItemId':' " + getItemId + "' }",
+                success: function (data) {
+                    $('#spnCart').html(data)
+                                    },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+        });
+
+        $('#spnCart').on('click', function () {
+            var getName = $('.divName').html();
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Home/GetCartItems',
+
+                success: function (data) {
+                    $('#exampleModal').html(data);
+                    $('#exampleModal').modal({
+                        backdrop: false
+                    });
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+        });
+
+        $(document).delegate('.cartDel', 'click', function () {
+            var DeleteItem = parseInt($(this).closest('tr').prop('id'));
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Home/DeleteCart',
+                data: "{ 'itemId':' " + DeleteItem + "' }",
+                success: function (data) {
+                    $('#exampleModal').html(data);
+                    $('#spnCart').html($(data).find('#cartList tbody tr').length);
+                    $('#exampleModal').modal({
+                        backdrop: false
+                    });
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+        });
+    });
+
+    
+
+</script>
+<body>
+    <div class="top">
+
+        <div class="divName" style="background-color:powderblue;">
+
+
+
+            @{
+                <b>Welcome : <i class="fas fa-user"></i> @ViewBag.userName</b>
+                
+
+            }
+
+            @*<b>@ViewBag.userName</b>*@
+
+        </div>
+        <div class="divCart" style="float:right">
+            <button><span id="spnCart" class="glyphicon glyphicon-shopping-cart">View Cart(@ViewBag.cartCount)</span></button><br>
+            <div class="divLgout">
+                <button><i class="fas fa-sign-out-alt"></i>@Html.ActionLink("Logout", "Login")</button>
+            </div>
+        </div>
+        
+        <div class="container">
+            <table>
+                @foreach (var objItem in Model)
+                {
+                <tr>
+                    
+                    <td id="@objItem.ItemId" color="white">
+                        <div class="itemImage">
+                            <div class="divImg"><img src="@objItem.ImagePath" height="150" width="150" /></div>
+                            <div class="divIName"><p>@objItem.Name</p></div>
+                        </div>
+
+                        <button>@Html.ActionLink("View Book Details","Details", new { id = objItem.ItemId })</button>
+
+                        <div class="divAddCart"><button><i class="fas fa-cart-plus"></i>Add To Cart</button></div>
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+</body>
+<div class="modal" id="exampleModal" tabindex="1000" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+</div>
+

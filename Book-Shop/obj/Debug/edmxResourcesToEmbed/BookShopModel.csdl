@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BookShopModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="BookShopModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Items" EntityType="BookShopModel.Item" />
+    <EntitySet Name="Carts1" EntityType="BookShopModel.Cart" />
+    <EntitySet Name="Users" EntityType="BookShopModel.Users" />
+    <AssociationSet Name="UsersItem" Association="BookShopModel.UsersItem">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="UsersCart" Association="BookShopModel.UsersCart">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Cart" EntitySet="Carts1" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Price" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" />
+    <Property Name="Category" Type="String" Nullable="false" />
+    <Property Name="Offer" Type="String" Nullable="false" />
+    <Property Name="ImagePath" Type="String" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="BookShopModel.UsersItem" FromRole="Item" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Login" BaseType="BookShopModel.Users">
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Cart">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" Nullable="false" />
+    <Property Name="ItemId" Type="String" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="BookShopModel.UsersCart" FromRole="Cart" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" />
+    <Property Name="LastName" Type="String" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" />
+    <NavigationProperty Name="Items" Relationship="BookShopModel.UsersItem" FromRole="Users" ToRole="Item" />
+    <NavigationProperty Name="Cart" Relationship="BookShopModel.UsersCart" FromRole="Users" ToRole="Cart" />
+  </EntityType>
+  <Association Name="UsersItem">
+    <End Type="BookShopModel.Users" Role="Users" Multiplicity="*" />
+    <End Type="BookShopModel.Item" Role="Item" Multiplicity="*" />
+  </Association>
+  <Association Name="UsersCart">
+    <End Type="BookShopModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="BookShopModel.Cart" Role="Cart" Multiplicity="1" />
+  </Association>
+</Schema>

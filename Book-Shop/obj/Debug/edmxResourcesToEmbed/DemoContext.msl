@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+  <Alias Key="Model" Value="BookShopModel" />
+  <Alias Key="Target" Value="BookShopModel.Store" />
+  <EntityContainerMapping CdmEntityContainer="BookShopModelContainer" StorageEntityContainer="BookShopModelStoreContainer">
+    <EntitySetMapping Name="Cart1">
+      <EntityTypeMapping TypeName="BookShopModel.Cart1">
+        <MappingFragment StoreEntitySet="Cart">
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

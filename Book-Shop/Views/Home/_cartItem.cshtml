@@ -1,0 +1,97 @@
+﻿@model BookShop.Models.Model_1
+
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+                Your cart
+            </h4>
+        </div>
+        <div class="modal-body">
+         <div> <!--Bootstrapgrid system have to be applied here -->
+            <table id="cartList">
+                <thead>
+                    <tr>
+                        <td><b>Image</b></td>
+                        <td><b>Name</b></td>
+                        <td><b>Price</b></td>
+                        <td><b>Quntity</b></td>
+                        <td><b>Action</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    @foreach (var objItem in Model.ItemSetGet)
+                    {
+
+                        <tr id="@objItem.ItemId">
+                            <td>
+                                <img src="@objItem.ImagePath" width="50" height="50" />
+                            </td>
+
+                            <td>
+                                @objItem.Name
+                            </td>
+                            <td>
+                                @objItem.Price
+                            </td>
+                            <td>
+                                Q no.<!--Find a way to take quantity from Cart Db -->
+                            </td>
+                            <td>
+                                <span class="cartDel"><button class="btn btn-danger"><i class="far fa-trash-alt"></i>Remove</button></span>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+
+            </table>
+            </div>
+         <div> <!--Bootstrapgrid system have to be applied here -->
+             <table id="cartList">
+                 <thead>
+                     <tr>
+                         <td><b>Quantity</b></td>
+                     </tr>
+                 </thead>
+                 @foreach (var objCart in Model.CartSetGet)
+                 {
+
+
+                     <tbody>
+                         <tr id="@objCart.ItemId">
+                             <td>
+                                 @objCart.Quantity
+                             </td>
+
+                         </tr>
+
+                     </tbody>
+
+
+
+
+                 }
+             </table>
+         </div>
+            <span class="totalPrice" style="align-content :flex-start">Total Amount @ViewBag.Total</span>
+        </div>
+        <div class="modal-footer">
+            
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+            <button type="button" class="btn btn-primary">
+                Proceed
+            </button>
+        </div>
+    </div>
+</div>
